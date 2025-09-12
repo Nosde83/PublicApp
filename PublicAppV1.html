@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PublicApp</title>
+    <meta name="description" content="Aplicativo de registro para publicadores.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%202L2%207l10%205l10-5l-10-5zm0%202l8%204l-8%204l-8-4l8-4zm-8%207v8l8%204l8-4v-8l-8-4l-8%204zm2%201l6%203l6-3v6l-6%203l-6-3v-6z%22%20fill%3D%22%232196F3%22%2F%3E%3C%2Fsvg%3E">
+    <meta name="theme-color" content="#2196F3">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%202L2%207l10%205l10-5l-10-5zm0%202l8%204l-8%204l-8-4l8-4zm-8%207v8l8%204l8-4v-8l-8-4l-8%204zm2%201l6%203l6-3v6l-6%203l-6-3v-6z%22%20fill%3D%22%232196F3%22%2F%3E%3C%2Fsvg%3E">
+
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        header #current-date {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            background-color: var(--card-background);
+            box-shadow: var(--box-shadow);
+            margin: 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            overflow-x: auto;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background-color 0.3s;
+            border-radius: 8px;
+        }
+
+        .nav-button:hover, .nav-button.active {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        main {
+            padding: 1rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1rem;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .form-section {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #1565C0;
+        }
+
+        #studies-list, #revisits-list, #students-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #studies-list li, #revisits-list li, #students-list li {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            word-break: break-word;
+        }
+
+        #studies-list li span, #revisits-list li span, #students-list li span {
+            flex-grow: 1;
+            padding-right: 1rem;
+        }
+        
+        #revisits-list li.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            color: #ccc;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .delete-btn:hover {
+            color: #E53935;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .report-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .report-section h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .report-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 0.5rem 0;
+        }
+        
+        .report-info span {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PublicApp</h1>
+        <div id="current-date"></div>
+    </header>
+
+    <nav>
+        <button class="nav-button active" data-page="register-page">Registo/Dia</button>
+        <button class="nav-button" data-page="revisits-page">Revisitas</button>
+        <button class="nav-button" data-page="students-page">Estudantes</button>
+        <button class="nav-button" data-page="report-page">Relatório</button>
+        <button class="nav-button" data-page="settings-page">Definições</button>
+    </nav>
+
+    <main>
+        <section id="register-page" class="page active">
+            <div class="card">
+                <h2>Registar Horas e Estudos</h2>
+                
+                <div class="form-section">
+                    <h3>Registo de Horas</h3>
+                    <form id="hours-form">
+                        <label for="hours-date">Data:</label>
+                        <input type="date" id="hours-date" required>
+    
+                        <label for="study-hours">Horas de Pregação:</label>
+                        <input type="number" id="study-hours" step="0.1" min="0" required>
+                        
+                        <button type="submit">Adicionar Horas</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3>Registo de Estudo</h3>
+                    <form id="study-form">
+                        <label for="study-date">Data:</label>
+                        <input type="date" id="study-date" required>
+                        
+                        <label for="study-student-select">Estudante:</label>
+                        <select id="study-student-select" required>
+                            <option value="">Selecione um estudante</option>
+                        </select>
+                        
+                        <label for="study-book">Livro:</label>
+                        <input type="text" id="study-book" placeholder="Ex: Livro de Salmos">
+                        
+                        <label for="study-chapter">Capítulo:</label>
+                        <input type="number" id="study-chapter" min="1">
+                        
+                        <label for="study-paragraph">Parágrafo:</label>
+                        <input type="number" id="study-paragraph" min="1">
+
+                        <button type="submit">Gravar Estudo</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Registos de Hoje</h2>
+                <ul id="studies-list">
+                    </ul>
+            </div>
+        </section>
+
+        <section id="revisits-page" class="page">
+            <div class="card">
+                <h2>Registar Nova Revisita</h2>
+                <form id="revisit-form">
+                    <label for="revisit-name">Nome:</label>
+                    <input type="text" id="revisit-name" required>
+
+                    <label for="revisit-note">Notas:</label>
+                    <textarea id="revisit-note" placeholder="Endereço, tema de conversa, etc."></textarea>
+                    
+                    <button type="submit">Adicionar Revisita</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2>Minhas Revisitas</h2>
+                <ul id="revisits-list">
+                    </ul>
+            </div>
+        </section>
+
+        <section id="students-page" class="page">
+            <div class="card">
+                <h2>Adicionar Novo Estudante</h2>
+                <form id="student-form">
+                    <label for="student-name">Nome do Estudante:</label>
+                    <input type="text" id="student-name" required>
+
+                    <div class="form-section">
+                        <h3>Último Estudo</h3>
+                        <label for="student-book">Livro:</label>
+                        <input type="text" id="student-book" placeholder="Ex: O que a Bíblia Ensina?">
+
+                        <label for="student-chapter">Capítulo:</label>
+                        <input type="number" id="student-chapter" min="1" placeholder="Ex: 3">
+                        
+                        <label for="student-paragraph">Parágrafo:</label>
+                        <input type="number" id="student-paragraph" min="1" placeholder="Ex: 15">
+                    </div>
+                    
+                    <button type="submit">Adicionar Estudante</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2>Lista de Estudantes</h2>
+                <ul id="students-list">
+                    </ul>
+            </div>
+        </section>
+
+        <section id="report-page" class="page">
+            <div class="card">
+                <h2>Relatório Mensal</h2>
+                <div class="report-section">
+                    <h3>Horas Dedicadas (Mês)</h3>
+                    <div class="report-info">
+                        <span id="monthly-hours">0 horas</span>
+                    </div>
+                </div>
+                <div class="report-section">
+                    <h3>Estudantes Ativos (Mês)</h3>
+                    <div class="report-info">
+                        <span id="monthly-students">0 estudantes</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="settings-page" class="page">
+            <div class="card">
+                <h2>Definições</h2>
+                <p>Aqui você pode gerir seus dados. O aplicativo armazena tudo no seu navegador.</p>
+                <div class="action-btns">
+                    <button onclick="exportData()">Exportar Dados</button>
+                    <button onclick="importData()">Importar Dados</button>
+                </div>
+                <hr style="margin: 1rem 0; border: none; border-top: 1px solid #eee;">
+                <p>Instale o aplicativo para ter acesso rápido!</p>
+                <button id="install-button">Adicionar à Tela Principal</button>
+                <hr style="margin: 1rem 0; border: none; border-top: 1px solid #eee;">
+                <button onclick="resetData()" style="background-color: #E53935;">Apagar Todos os Dados</button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Lógica do aplicativo
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateElement = document.getElementById('current-date');
+            const navButtons = document.querySelectorAll('.nav-button');
+            const pages = document.querySelectorAll('.page');
+            const hoursForm = document.getElementById('hours-form');
+            const studyForm = document.getElementById('study-form');
+            const revisitForm = document.getElementById('revisit-form');
+            const studentForm = document.getElementById('student-form');
+            const studiesList = document.getElementById('studies-list');
+            const revisitsList = document.getElementById('revisits-list');
+            const studentsList = document.getElementById('students-list');
+            const studyStudentSelect = document.getElementById('study-student-select');
+            const installButton = document.getElementById('install-button');
+
+            let deferredPrompt;
+
+            // Exibir data atual
+            dateElement.textContent = new Date().toLocaleDateString('pt-br', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Lógica de navegação entre páginas
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    pages.forEach(page => page.classList.remove('active'));
+                    
+                    button.classList.add('active');
+                    const targetPageId = button.getAttribute('data-page');
+                    document.getElementById(targetPageId).classList.add('active');
+
+                    if (targetPageId === 'report-page') {
+                        updateReport();
+                    } else if (targetPageId === 'register-page') {
+                        updateStudyStudentSelect();
+                    }
+                });
+            });
+
+            // --- Gerenciamento de Dados ---
+            const getData = (key) => JSON.parse(localStorage.getItem(key)) || [];
+            const saveData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
+
+            // FUNÇÕES DE RENDERIZAÇÃO
+            const renderStudies = () => {
+                const studies = getData('studies');
+                const hours = getData('hours');
+                const today = new Date().toISOString().slice(0, 10);
+                
+                studiesList.innerHTML = '';
+
+                // Renderizar horas
+                hours.filter(h => h.date === today).forEach(h => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span><strong>Horas:</strong> ${h.hours}h</span>
+                        <button class="delete-btn" onclick="deleteItem('hours', '${h.id}')">&#10005;</button>
+                    `;
+                    studiesList.appendChild(li);
+                });
+
+                // Renderizar estudos
+                studies.filter(s => s.date === today).forEach(s => {
+                    const student = getData('students').find(st => st.id === s.studentId);
+                    const studentName = student ? student.name : 'Estudante Desconhecido';
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>
+                            <strong>Estudo:</strong> ${studentName}<br>
+                            <small>${s.book} Cap. ${s.chapter} Par. ${s.paragraph}</small>
+                        </span>
+                        <button class="delete-btn" onclick="deleteItem('studies', '${s.id}')">&#10005;</button>
+                    `;
+                    studiesList.appendChild(li);
+                });
+            };
+
+            const renderRevisits = () => {
+                const revisits = getData('revisits');
+                revisitsList.innerHTML = '';
+                revisits.forEach(revisit => {
+                    const li = document.createElement('li');
+                    li.className = revisit.completed ? 'completed' : '';
+                    li.innerHTML = `
+                        <span onclick="toggleCompleted('revisits', '${revisit.id}')">
+                            <strong>${revisit.name}</strong><br>
+                            <small>${revisit.note}</small>
+                        </span>
+                        <button class="delete-btn" onclick="deleteItem('revisits', '${revisit.id}')">&#10005;</button>
+                    `;
+                    revisitsList.appendChild(li);
+                });
+            };
+
+            const renderStudents = () => {
+                const students = getData('students');
+                studentsList.innerHTML = '';
+                students.forEach(student => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>
+                            <strong>${student.name}</strong><br>
+                            <small>Último Estudo: ${student.lastStudy.book} Cap. ${student.lastStudy.chapter}, Par. ${student.lastStudy.paragraph}</small>
+                        </span>
+                        <button class="delete-btn" onclick="deleteItem('students', '${student.id}')">&#10005;</button>
+                    `;
+                    studentsList.appendChild(li);
+                });
+            };
+            
+            const updateStudyStudentSelect = () => {
+                const students = getData('students');
+                studyStudentSelect.innerHTML = '<option value="">Selecione um estudante</option>';
+                students.forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = student.name;
+                    studyStudentSelect.appendChild(option);
+                });
+            };
+
+            const updateReport = () => {
+                const hours = getData('hours');
+                const studies = getData('studies');
+                const now = new Date();
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+                
+                let monthlyHours = 0;
+                let monthlyStudents = new Set();
+                
+                hours.forEach(h => {
+                    const hDate = new Date(h.date);
+                    if (hDate.getMonth() === currentMonth && hDate.getFullYear() === currentYear) {
+                        monthlyHours += parseFloat(h.hours);
+                    }
+                });
+                
+                studies.forEach(s => {
+                    const sDate = new Date(s.date);
+                    if (sDate.getMonth() === currentMonth && sDate.getFullYear() === currentYear) {
+                        monthlyStudents.add(s.studentId);
+                    }
+                });
+                
+                document.getElementById('monthly-hours').textContent = `${monthlyHours.toFixed(1)} horas`;
+                document.getElementById('monthly-students').textContent = `${monthlyStudents.size} estudantes`;
+            };
+
+            // FUNÇÕES DE AÇÃO
+            window.deleteItem = (key, id) => {
+                let items = getData(key);
+                items = items.filter(item => item.id !== id);
+                saveData(key, items);
+                if (key === 'studies' || key === 'hours') renderStudies();
+                else if (key === 'revisits') renderRevisits();
+                else if (key === 'students') {
+                    renderStudents();
+                    updateStudyStudentSelect();
+                }
+            };
+
+            window.toggleCompleted = (key, id) => {
+                const items = getData(key);
+                const item = items.find(i => i.id === id);
+                if (item) {
+                    item.completed = !item.completed;
+                    saveData(key, items);
+                    renderRevisits();
+                }
+            };
+            
+            // Submissão de formulários
+            hoursForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newHours = {
+                    id: Date.now().toString(),
+                    date: document.getElementById('hours-date').value,
+                    hours: parseFloat(document.getElementById('study-hours').value)
+                };
+                const hours = getData('hours');
+                hours.push(newHours);
+                saveData('hours', hours);
+                hoursForm.reset();
+                renderStudies();
+            });
+
+            studyForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const studentId = document.getElementById('study-student-select').value;
+                const newStudy = {
+                    id: Date.now().toString(),
+                    date: document.getElementById('study-date').value,
+                    studentId: studentId,
+                    book: document.getElementById('study-book').value.trim(),
+                    chapter: document.getElementById('study-chapter').value.trim(),
+                    paragraph: document.getElementById('study-paragraph').value.trim()
+                };
+
+                // Atualizar progresso do estudante
+                const students = getData('students');
+                const student = students.find(s => s.id === studentId);
+                if (student) {
+                    student.lastStudy = {
+                        book: newStudy.book,
+                        chapter: newStudy.chapter,
+                        paragraph: newStudy.paragraph
+                    };
+                    saveData('students', students);
+                }
+
+                const studies = getData('studies');
+                studies.push(newStudy);
+                saveData('studies', studies);
+                studyForm.reset();
+                renderStudies();
+            });
+
+            revisitForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newRevisit = {
+                    id: Date.now().toString(),
+                    name: document.getElementById('revisit-name').value.trim(),
+                    note: document.getElementById('revisit-note').value.trim(),
+                    completed: false
+                };
+                const revisits = getData('revisits');
+                revisits.push(newRevisit);
+                saveData('revisits', revisits);
+                revisitForm.reset();
+                renderRevisits();
+            });
+
+            studentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newStudent = {
+                    id: Date.now().toString(),
+                    name: document.getElementById('student-name').value.trim(),
+                    lastStudy: {
+                        book: document.getElementById('student-book').value.trim(),
+                        chapter: document.getElementById('student-chapter').value.trim(),
+                        paragraph: document.getElementById('student-paragraph').value.trim()
+                    }
+                };
+                const students = getData('students');
+                students.push(newStudent);
+                saveData('students', students);
+                studentForm.reset();
+                renderStudents();
+                updateStudyStudentSelect();
+            });
+            
+            // Funções de Definições
+            window.exportData = () => {
+                const data = {
+                    hours: getData('hours'),
+                    studies: getData('studies'),
+                    revisits: getData('revisits'),
+                    students: getData('students')
+                };
+                const json = JSON.stringify(data, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'publicapp-data.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                alert('Dados exportados com sucesso!');
+            };
+            
+            window.importData = () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'application/json';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const importedData = JSON.parse(event.target.result);
+                            if (importedData.hours) saveData('hours', importedData.hours);
+                            if (importedData.studies) saveData('studies', importedData.studies);
+                            if (importedData.revisits) saveData('revisits', importedData.revisits);
+                            if (importedData.students) saveData('students', importedData.students);
+                            alert('Dados importados com sucesso! A página será recarregada.');
+                            location.reload();
+                        } catch (error) {
+                            alert('Erro ao importar o arquivo. Verifique se o formato está correto.');
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            };
+            
+            window.resetData = () => {
+                if (confirm('Tem certeza que deseja apagar TODOS os dados? Esta ação não pode ser desfeita.')) {
+                    localStorage.clear();
+                    alert('Todos os dados foram apagados. A página será recarregada.');
+                    location.reload();
+                }
+            };
+            
+            // Lógica do botão de instalação PWA
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                installButton.style.display = 'block';
+            });
+
+            installButton.addEventListener('click', (e) => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('Usuário aceitou a instalação do PWA');
+                        } else {
+                            console.log('Usuário recusou a instalação do PWA');
+                        }
+                        deferredPrompt = null;
+                    });
+                }
+            });
+
+            // Inicialização
+            renderStudies();
+            renderRevisits();
+            renderStudents();
+            updateStudyStudentSelect();
+
+            // Lógica PWA (Service Worker e Manifesto embutidos)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(unescape(encodeURIComponent(`
+                    self.addEventListener('fetch', event => {
+                      event.respondWith(caches.match(event.request).then(response => {
+                        return response || fetch(event.request);
+                      }));
+                    });
+
+                    self.addEventListener('install', event => {
+                      self.skipWaiting();
+                    });
+                `))), { scope: './' }).then(reg => {
+                    console.log('Service Worker registrado com sucesso!');
+                }).catch(err => {
+                    console.log('Registro do Service Worker falhou:', err);
+                });
+            }
+
+            const manifest = {
+                name: "PublicApp",
+                short_name: "PublicApp",
+                description: "Aplicativo para publicadores.",
+                start_url: "./?source=pwa",
+                display: "standalone",
+                background_color: "#f0f2f5",
+                theme_color: "#2196F3",
+                icons: [
+                    {
+                        src: "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%202L2%207l10%205l10-5l-10-5zm0%202l8%204l-8%204l-8-4l8-4zm-8%207v8l8%204l8-4v-8l-8-4l-8%204zm2%201l6%203l6-3v6l-6%203l-6-3v-6z%22%20fill%3D%22%232196F3%22%2F%3E%3C%2Fsvg%3E",
+                        sizes: "192x192",
+                        type: "image/svg+xml"
+                    },
+                    {
+                        src: "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%202L2%207l10%205l10-5l-10-5zm0%202l8%204l-8%204l-8-4l8-4zm-8%207v8l8%204l8-4v-8l-8-4l-8%204zm2%201l6%203l6-3v6l-6%203l-6-3v-6z%22%20fill%3D%22%232196F3%22%2F%3E%3C%2Fsvg%3E",
+                        sizes: "512x512",
+                        type: "image/svg+xml"
+                    }
+                ]
+            };
+            
+            const manifestLink = document.createElement('link');
+            manifestLink.rel = 'manifest';
+            manifestLink.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest));
+            document.head.appendChild(manifestLink);
+        });
+    </script>
+</body>
+</html>
