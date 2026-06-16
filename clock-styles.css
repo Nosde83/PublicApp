@@ -1,0 +1,384 @@
+:root {
+    --primary-color: #FF6B35;
+    --secondary-color: #004E89;
+    --dark-bg: #0a0e27;
+    --card-bg: #1a1f3a;
+    --text-light: #e0e0e0;
+    --text-lighter: #a0a0a0;
+    --accent: #00d4ff;
+    --remove-color: #ff4757;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, var(--dark-bg) 0%, #1a2d5c 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: slideDown 0.6s ease-out;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+}
+
+header p {
+    color: var(--text-lighter);
+    font-size: 1.1rem;
+}
+
+/* Controls */
+.controls {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.8s ease-out;
+}
+
+.controls label {
+    font-weight: bold;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+.controls select {
+    flex: 1;
+    min-width: 250px;
+    padding: 0.75rem;
+    background-color: rgba(0, 212, 255, 0.1);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.controls select:hover {
+    background-color: rgba(0, 212, 255, 0.2);
+}
+
+.controls select:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.controls select option {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+}
+
+.btn-add,
+.btn-reset {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-add {
+    background: linear-gradient(135deg, var(--primary-color), #ff8c42);
+    color: white;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+}
+
+.btn-reset {
+    background: var(--remove-color);
+    color: white;
+}
+
+.btn-reset:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+}
+
+/* Clocks Grid */
+.clocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+    animation: fadeIn 1s ease-out;
+}
+
+.clock-card {
+    background: linear-gradient(135deg, var(--card-bg), rgba(255, 107, 53, 0.05));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    animation: scaleIn 0.4s ease-out;
+}
+
+.clock-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 107, 53, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.clock-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(0, 212, 255, 0.6);
+    box-shadow: 0 16px 40px rgba(0, 212, 255, 0.2);
+}
+
+.clock-card:hover::before {
+    opacity: 1;
+}
+
+.clock-city {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.clock-display {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 1.5rem 0;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+    font-family: 'Courier New', monospace;
+    position: relative;
+    z-index: 1;
+}
+
+.clock-timezone {
+    font-size: 0.9rem;
+    color: var(--text-lighter);
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.clock-date {
+    font-size: 0.85rem;
+    color: var(--text-lighter);
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.clock-remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--remove-color);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.clock-card:hover .clock-remove {
+    opacity: 1;
+}
+
+.clock-remove:hover {
+    background: #ff1744;
+    transform: scale(1.1);
+}
+
+/* Info Section */
+.info-section {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+}
+
+.info-section h3 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.info-section p {
+    color: var(--text-lighter);
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+#clock-count {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-lighter);
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.clock-display {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .controls label {
+        width: 100%;
+    }
+
+    .controls select,
+    .btn-add,
+    .btn-reset {
+        width: 100%;
+    }
+
+    .clocks-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .clock-display {
+        font-size: 2rem;
+    }
+
+    .clock-city {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    header p {
+        font-size: 0.9rem;
+    }
+
+    .controls {
+        padding: 1rem;
+    }
+
+    .clock-display {
+        font-size: 1.8rem;
+    }
+
+    .info-section {
+        padding: 1rem;
+    }
+}
