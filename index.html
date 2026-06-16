@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaShop.AO - Loja Online</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">MetaShop.AO</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#produtos">Produtos</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#contato">Contato</a></li>
+                <li><a href="#carrinho" class="carrinho-icon">🛒 <span class="cart-count">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>Bem-vindo à MetaShop.AO</h1>
+            <p>Sua loja online de confiança em Angola</p>
+            <button class="btn-primary" onclick="scrollToProducts()">Explorar Produtos</button>
+        </div>
+    </section>
+
+    <section id="produtos" class="produtos">
+        <div class="container">
+            <h2>Nossos Produtos</h2>
+            <div class="produtos-grid" id="produtos-grid">
+                <!-- Produtos serão carregados aqui -->
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="sobre">
+        <div class="container">
+            <h2>Sobre MetaShop.AO</h2>
+            <p>Somos uma plataforma de e-commerce inovadora, dedicada a oferecer os melhores produtos e serviços para os clientes angolanos.</p>
+        </div>
+    </section>
+
+    <section id="contato" class="contato">
+        <div class="container">
+            <h2>Entre em Contato</h2>
+            <form class="formulario-contato">
+                <input type="text" placeholder="Seu Nome" required>
+                <input type="email" placeholder="Seu Email" required>
+                <textarea placeholder="Sua Mensagem" required></textarea>
+                <button type="submit" class="btn-primary">Enviar</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MetaShop.AO. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
